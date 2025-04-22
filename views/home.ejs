@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer type="module" src="/client.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <form action="/api/logout" method="get">
+        <button class="logout">Log out</button>
+    </form>
+    <!-- search form -->
+          <div class="searchContainer">
+            <h1>seach student</h1>
+            <form id="search">
+                <input type="text" autofocus name="searchInput" id="searchInput" placeholder="search student...">
+            </form>
+          </div>
+         
+       
+   
+    <div class="students" >
+        <% if(students){ %>
+            <table>
+           
+               <thead>
+                <th>id</th>
+                <th>studentName</th>
+                <th>grade</th>
+               </thead>
+                <% students.forEach((s)=>{ %>
+               <tbody border="1">
+                <tr>
+                    <td><%=s.id%></td>
+                    <td id="name"><a href="/studentProfile/<%=s.id%>"><%=s.studentname%></a></td>
+                    <td><%=s.grade%></td>
+                    <td> 
+                        <div class="buttons" style="display: flex; gap: 10px;">
+                            <a href="/api/student/<%=s.id%>/update?_METHOD=PUT">Edit</a>
+                        <form action="/api/student/<%=s.id%>/delete?_method=DELETE" method="POST">
+                            <button name="dBtn" type="submit">Delete</button>
+                        </form>
+                        </div>
+                    </td>
+                </tr>
+               </tbody>
+            <% }) %>
+            </table><br>
+        
+    <% } %>
+    </div>
+   
+    <!-- adding new studentName
+     <form action="/api/student/add" method="post" id="addForm" >
+        <input type="text" name="studentName" id="studentName" placeholder="add new counutry">
+        <input type="number" name="grade" id="grade" placeholder="add new grade">
+         <button class="addBtn">add</button>
+     </form> -->
+</body>
+</html>

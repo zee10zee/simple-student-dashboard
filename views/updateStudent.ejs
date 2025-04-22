@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>update</title>
+</head>
+<body>
+
+    <% console.log("comes from ejs " + s.id)%>
+    <form action="/api/student/<%=s.id%>/update?_method=PUT"  method="POST">
+        <input type="text" name="editName" id="editName"  value="<%=s.studentname%>" placeholder="add new counutry">
+        <input type="number" name="editGrade" id="editGrade" value="<%= s.grade  %>" placeholder="add new grade">
+        <button class="editBtn">Save</button>
+    </form>
+</body>
+</html>

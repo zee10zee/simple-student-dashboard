@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .container{
+            max-width: 60%;
+            margin: 100px auto;
+            background: beige;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+    </style>
+</head>
+<body>
+       <div class="score"><h3>score : </h3></div>
+    <div class="container">
+        <div class="random"><h2><%= capital  %></h2></div><br><br>
+        <form action="/next" id="form">
+            <input type="text" id="countryType" required placeholder="put the country"><br><br>
+            <button class="submit">Submit</button>
+        </form>
+    </div>
+<!--     
+    <script>
+        document.getElementById('form').addEventListener('submit', (e)=>{
+            // e.preventDefault()
+            const input = document.getElementById('countryType')
+            input.value = ''
+            input.focus()
+            console.log(countries)
+        })
+    </script> -->
+</body>
+</html>

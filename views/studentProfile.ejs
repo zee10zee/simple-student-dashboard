@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title><%= student.studentname%>'s profile</title>
+</head>
+<body>
+    <h1><%=student.studentname%>'s profile</h1>
+  
+     <div class="address">
+        <h1>address: </h1>
+        <% if(Object.values(student).some(val => val === "N/A")){ %>
+            <form action="/api/student/<%=student.id%>/address" method="post">
+                <input type="text" required name="city" id="city" class="city" placeholder="add city">
+                <input type="text" required name="street" id="street" class="street" placeholder="add street">
+                <button type="submit">Add</button>
+            </form>
+         <% } %>
+        <p>City : <%= student.city %></p>
+        <p>Street : <%= student.street %></p>
+     </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>sign up</title>
+    <style>
+        #signUpForm, input{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+     <!-- adding new studentName -->
+      <h1>welcome, please sign up !</h1>
+     <form action="/api/signup" method="post" id="signUpForm" >
+        <input type="text" name="studentName" required id="studentName" placeholder="student name"><br><br>
+        <input type="number" name="grade" required id="grade" placeholder="student grade"><br><br>
+         <button class="addBtn">Sign up</button>
+         <a href="/api/login">already signed up ?</a>
+     </form>
+</body>
+</html>

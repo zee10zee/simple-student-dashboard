@@ -1,0 +1,47 @@
+*{
+    font-size: 20px;
+}
+body{
+    max-width: 60%;
+    margin: 100px auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 10px;
+    /* font-size: 25px; */
+}
+
+.students{
+    background-color: aqua;
+}
+
+td, th{
+    gap: 10px; 
+    /* display: flex; */
+    padding: 10px;
+}
+
+#search{
+    width: 450px;
+    margin: 0 auto;
+}
+#searchInput{
+    width: 100%;
+}
+
+#addForm{
+    width: 450px;
+}
+
+#addForm input{
+    width: 41.6%;
+}
+
+.logout{
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    /* margin-left: auto; */
+}
