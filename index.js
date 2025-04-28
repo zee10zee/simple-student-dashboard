@@ -5,8 +5,11 @@ import bodyParser from "body-parser"
 import methodOverride from "method-override"
 import session, { Session } from "express-session"
 import {dbConnect} from "./db.js"
+import createTables from "./createdTables.js"
 // const pgSession  = require('connect-pg-simple')(session) alternative as below
 const {store, pool} = dbConnect()
+
+
 const app = express()
 
 app.use(session({
@@ -21,12 +24,12 @@ app.use(session({
     cookie : {secure : false}
 }))
 
+await createTables()
 
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(methodOverride('_method'))
 app.use(express.static('public')) //required for form data
 app.use(express.json()) // required for json() body
-
 app.get('/', (req,res)=>{
     res.render('signup.ejs')
 })
@@ -113,8 +116,9 @@ app.get('/students', async(req,res)=>{
 app.get('/api/student/:id/update', async(req,res)=>{
     const {id} = req.params;
     const student = await pool.query(`SELECT * from students where id = $1`, [id])
-    res.render('signup.ejs', {s : student.rows[0]})
-})
+    res.render('updateStudent.ejs', {s : student.rows[0]})
+});
+
 app.put('/api/student/:id/update', async(req,res)=>{
    try{
     const {id}  = req.params;
