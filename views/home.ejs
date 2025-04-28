@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script defer type="module" src="/client.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <form action="/api/logout" method="get">
         <button class="logout">Log out</button>
     </form>
+
+    <div class="">logged in user : <span class="activeUser"><%= loggedInuser.studentname%>-<%= loggedInuser.id%></span></div>
+
+    <div class="reminder" style="color: red;">if you delete your account , you are going to be logged out !</div>
+
     <!-- search form -->
           <div class="searchContainer">
             <h1>seach student</h1>
@@ -31,8 +35,9 @@
                 <th>studentName</th>
                 <th>grade</th>
                </thead>
+               
+               <tbody border="1" class="studentRow">
                 <% students.forEach((s)=>{ %>
-               <tbody border="1">
                 <tr>
                     <td><%=s.id%></td>
                     <td id="name"><a href="/studentProfile/<%=s.id%>"><%=s.studentname%></a></td>
@@ -40,24 +45,71 @@
                     <td> 
                         <div class="buttons" style="display: flex; gap: 10px;">
                             <a href="/api/student/<%=s.id%>/update?_METHOD=PUT">Edit</a>
-                        <form action="/api/student/<%=s.id%>/delete?_method=DELETE" method="POST">
+                        <form data-user-id ="<%=s.id%>" class="deleteForm">
                             <button name="dBtn" type="submit">Delete</button>
                         </form>
                         </div>
                     </td>
                 </tr>
+                <% }) %>
                </tbody>
-            <% }) %>
-            </table><br>
-        
+            </table><br>        
     <% } %>
+    <div class="loading">Loading...</div>
     </div>
-   
-    <!-- adding new studentName
-     <form action="/api/student/add" method="post" id="addForm" >
-        <input type="text" name="studentName" id="studentName" placeholder="add new counutry">
-        <input type="number" name="grade" id="grade" placeholder="add new grade">
-         <button class="addBtn">add</button>
-     </form> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <script>
+      let student = document.querySelector('.studentRow')
+     let laoding = document.querySelector('.loading');
+
+     document.addEventListener('DOMContentLoaded', ()=>{
+        loadData()
+
+     })
+
+     function loadData(){
+        window.onload = ()=>{
+            laoding.style.display = "none"
+            document.querySelector('table').style.display =  "table-row" 
+        }
+     }
+
+
+
+      console.log(student)
+      student.addEventListener('submit', async(e)=>{
+        e.preventDefault()
+        try{
+
+        if(e.target && e.target.classList.contains('deleteForm')){
+           console.log(e.target)
+
+            const form = e.target
+            console.log("form " + form)
+           let userid = form.getAttribute('data-user-id')
+             if(typeof userid === 'string') userid = Number(userid);
+
+             const logoutConfirm = confirm('are you sure ??');
+
+             if(logoutConfirm){
+                const response = await axios.delete(`/api/student/${userid}/delete`);
+                if(response.data.loggedInuser === userid){
+                    window.location.assign('/')
+                }else{
+                        location.reload()
+                }
+    }
+        }else{
+            console.log('deleting canceled !')
+            return;
+        }
+
+        }
+        catch(err){
+                console.log(err)
+            }
+      })
+     
+   </script>
 </body>
 </html>

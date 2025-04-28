@@ -98,15 +98,17 @@ app.get('/api/logout', (req,res)=>{
 app.get('/students', async(req,res)=>{
 
   try{
-       const loggedInUser = req.session.studentId;
-       if(!loggedInUser){
-        return res.redirect('/')
+       const loggedInUser = pool.query('SELECT * FROM students where id = $1', [req.session.studentId]);
+       if(!(await loggedInUser).rowCount > 0){
+           return res.redirect('/')
        }
+
 
     const result = await pool.query('SELECT * FROM students order by id')
     const students = result.rows
     res.render('home.ejs', {
         students : students,
+        loggedInuser : (await loggedInUser).rows[0]
     })
   }catch(err){
     console.log(err)
@@ -141,18 +143,42 @@ app.put('/api/student/:id/update', async(req,res)=>{
 
 app.delete('/api/student/:id/delete', async (req,res)=>{
     const {id} = req.params
-let isDeleted = false;
+    const loggedInUserId = req.session.studentId;
     try{        
       const deletedStudent = await pool.query('DELETE FROM students WHERE id = $1 RETURNING *;', [id])
-      isDeleted = true;
+      console.log(deletedStudent.rows[0].studentname)
+      console.log('deleted user id : ' + deletedStudent.rows[0].id + " loggedin user : " + loggedInUserId)
 
-      if(isDeleted === true){
-        res.redirect('/students')
-        return console.log('student deleted successfully !' + JSON.stringify(deletedStudent.rows[0]))
-        
-      }
+      
+        //   return console.log(deletedStudent.rows)
+        if(deletedStudent.rows.length === 0){
+            return res.send('student not found !')
+        }
+
+      if(deletedStudent.rows[0].id === loggedInUserId){
+               req.session.destroy((err)=> {
+                  if(err){
+                    console.log('you are logged out !')
+                    return res.send(err)
+                  }
+
+                  return res.json({
+                    message :' user deleted and logged out',
+                    redirectTo : '/'
+                  });
+                
+               })
+              
+            }else{
+                res.json(
+                    {deletedData : deletedStudent.rows[0], 
+                        loggedInuser : loggedInUserId
+                    })
+                
+            }
+
     }catch(err){
-        return res.send(err.message)
+        res.status(500).json({Error : 'user delete error'})
     }
 })
 
