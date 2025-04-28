@@ -1,38 +1,25 @@
-import dotenv from "dotenv"
+
 import express from "express"
 import ejs from "ejs"
-import multer from "multer"
-import pkg from "pg"
 import bodyParser from "body-parser"
 import methodOverride from "method-override"
 import session, { Session } from "express-session"
+import {dbConnect} from "./db.js"
 // const pgSession  = require('connect-pg-simple')(session) alternative as below
-import pgSession from "connect-pg-simple"
-
-const {Pool} = pkg
-const store = pgSession(session)
-// setting up the .env file to be readable by node
-// since we use its variable in here [process.env]
-dotenv.config();
+const {store, pool} = dbConnect()
 const app = express()
 
-//database connection 
-let pool = new Pool({
-    user: process.env.PGUSER,
-    host: process.env.PGHOST,
-    database: process.env.PGDATABASE,
-    password: process.env.PASSWORD,
-    port: process.env.PGPORT,
-})
 app.use(session({
-    store : new store({pool : pool}),
+    store : new store({
+        pool : pool,
+        tableName: "session",
+        createTableIfMissing: true, // <--- ADD THIS
+    }),
     secret : 'postgres',
     resave :false,
     saveUninitialized : false,
     cookie : {secure : false}
 }))
-
-
 
 
 app.use(bodyParser.urlencoded({extended : true}))
