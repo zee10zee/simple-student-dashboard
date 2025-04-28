@@ -9,7 +9,7 @@ const handleSearch = async()=>{
    try{
        const tds = document.querySelectorAll('#name')
 console.log(tds)
-    const result = await axios.post('http://localhost:3000/api/student/search',{
+    const result = await axios.post('/api/student/search',{
         searchInput : searchInput.value
     });
   
