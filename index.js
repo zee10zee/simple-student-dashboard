@@ -3,6 +3,7 @@ import express from "express"
 import ejs from "ejs"
 import bodyParser from "body-parser"
 import methodOverride from "method-override"
+import cors from "cors"
 import session, { Session } from "express-session"
 import {dbConnect} from "./db.js"
 import createTables from "./createdTables.js"
@@ -11,6 +12,11 @@ const {store, pool} = dbConnect()
 
 
 const app = express()
+app.use(cors({
+    origin : 'https://simple-student-dashboard.onrender.com',
+    methods :['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    credentials : 'true'
+}));
 
 app.use(session({
     store : new store({
