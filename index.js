@@ -6,12 +6,16 @@ import methodOverride from "method-override"
 import cors from "cors"
 import session, { Session } from "express-session"
 import {dbConnect} from "./db.js"
+import dotenv from "dotenv"
 import createTables from "./createdTables.js"
 // const pgSession  = require('connect-pg-simple')(session) alternative as below
 const {store, pool} = dbConnect()
 
+var port  = process.env.PORT || 3000;
 
 const app = express()
+
+dotenv.config()
 app.use(cors({
     origin : 'https://simple-student-dashboard.onrender.com',
     methods :['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
@@ -241,7 +245,7 @@ app.post('/api/student/:id/address', async(req,res)=>{
 })
 
 
-app.listen(3000, ()=> {
+app.listen(port, ()=> {
     console.log('running')
 })
 
