@@ -34,15 +34,20 @@ app.use(session({
     cookie : {secure : false}
 }))
 
+app.set('view eingine', 'ejs');
+
+
 await createTables()
 
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(methodOverride('_method'))
 app.use(express.static('public')) //required for form data
 app.use(express.json()) // required for json() body
+
 app.get('/', (req,res)=>{
     res.render('signup.ejs')
 })
+
 app.post('/api/signup', async(req,res)=>{
     const studentName = req.body.studentName.trim();
     const grade = Number(req.body.grade.trim());
